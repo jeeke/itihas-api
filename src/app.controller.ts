@@ -7,6 +7,6 @@ export class AppController {
 
     @Get('api')
     getHello() {
-        return {message: "Welcome to Margdarsan API!"}
+        return {message: "Welcome to Itihas API!"}
     }
 }
