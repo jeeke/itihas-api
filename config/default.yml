@@ -3,11 +3,11 @@ server:
 
 db:
   type: 'postgres'
-  database: 'postgres'
-  host: 'margdarsandev.c9zchczwypcl.ap-south-1.rds.amazonaws.com'
+  database: 'dao27n3011rmfi'
+  host: 'ec2-3-211-176-230.compute-1.amazonaws.com'
   port: 5432
-  username: 'postgres'
-  password: 'postgres'
+  username: 'ljeylpqrfidjmm'
+  password: 'bf5234feab8a3ff6337fe7f0e8a1fda67de643199b4fef50d60c2f1c2a1020c6'
   synchronize: true
 
 jwt:
