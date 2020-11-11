@@ -1,0 +1,15 @@
+server:
+  port: 3000
+
+db:
+  type: 'postgres'
+  database: 'postgres'
+  host: 'margdarsandev.c9zchczwypcl.ap-south-1.rds.amazonaws.com'
+  port: 5432
+  username: 'postgres'
+  password: 'postgres'
+  synchronize: true
+
+jwt:
+  secret: 'jfal24dfaee324'
+#  expiresIn: 3600
