@@ -5,8 +5,9 @@ import {typeOrmConfig} from './config/typeorm.config';
 import {AuthService} from './auth/auth.service';
 import {AuthModule} from "./auth/auth.module";
 import {ServeStaticModule} from "@nestjs/serve-static";
-import { join } from 'path';
-import { PaymentModule } from './payment/payment.module';
+import {join} from 'path';
+import {PaymentModule} from './payment/payment.module';
+import {AppService} from "./app.service";
 
 @Module({
     imports: [
@@ -19,7 +20,7 @@ import { PaymentModule } from './payment/payment.module';
         PaymentModule
     ],
     controllers: [AppController],
-    providers: [AuthService],
+    providers: [AuthService, AppService],
 })
 export class AppModule {
 }
