@@ -19,7 +19,7 @@ export class AuthService {
             }
         });
         if (user) {
-            const matched = await bcrypt.compare(user.email, loginDto.password)
+            const matched = await bcrypt.compare(user.hashed_password, loginDto.password)
             if (matched) return user;
             else throw new ConflictException("Wrong Credentials!")
         } else throw new NotFoundException();
