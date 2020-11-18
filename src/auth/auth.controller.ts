@@ -9,7 +9,6 @@ export class AuthController {
     constructor(private authService: AuthService) {
     }
 
-    @UseGuards(JwtAuthGuard)
     @Post("/login")
     login(@Body(ValidationPipe) loginDto: LoginDto) {
         return this.authService.login(loginDto);

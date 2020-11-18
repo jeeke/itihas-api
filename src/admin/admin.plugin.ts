@@ -20,24 +20,24 @@ export async function setupAdminPanel(app: INestApplication): Promise<void> {
         rootPath: "/admin"
     });
 
-    // const router = AdminBroExpress.buildRouter(adminBro);
-    const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
-        authenticate: async (username, password) => {
-            const user = await User.findOne({
-                where: {
-                    phone: username
-                }
-            })
-            if (user && user.user_type === UserType.Admin) {
-                const matched = await bcrypt.compare(password, user.hashed_password)
-                if (matched ) {
-                    return user
-                }
-            }
-            return false
-        },
-        cookiePassword: 'sgfdg#$*NDSU#*$(Q)@46w&q45$#34va$^)dsgv43',
-    })
+    const router = AdminBroExpress.buildRouter(adminBro);
+    // const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+    //     authenticate: async (username, password) => {
+    //         const user = await User.findOne({
+    //             where: {
+    //                 email: username
+    //             }
+    //         })
+    //         if (user && user.user_type === UserType.Admin) {
+    //             const matched = await bcrypt.compare(password, user.hashed_password)
+    //             if (matched ) {
+    //                 return user
+    //             }
+    //         }
+    //         return false
+    //     },
+    //     cookiePassword: 'sgf$^)#*VYEUIOW%_*45$#34va$^)dsgv43',
+    // })
     app.use(adminBro.options.rootPath, router);
 
 }

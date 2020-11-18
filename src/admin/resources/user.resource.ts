@@ -15,7 +15,6 @@ const middleware = async (request) => {
 const UserResource: ResourceWithOptions = {
     resource: User,
     options: {
-        listProperties: ['id', 'phone', 'user_type'],
         actions: {
             new: {
                 before: middleware,
