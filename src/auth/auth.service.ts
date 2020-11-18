@@ -19,7 +19,7 @@ export class AuthService {
             }
         });
         if (user) {
-            const matched = await bcrypt.compare(user.hashed_password, loginDto.password)
+            const matched = await bcrypt.compare(loginDto.password, user.hashed_password)
             if (matched) return user;
             else throw new ConflictException("Wrong Credentials!")
         } else throw new NotFoundException();
@@ -35,6 +35,7 @@ export class AuthService {
         user.city = city
         user.country = country
         user.hashed_password = await bcrypt.hash(password, 10)
+        // user.hashed_password = password
 
         try {
             await user.save();
