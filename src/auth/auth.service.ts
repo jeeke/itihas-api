@@ -20,8 +20,12 @@ export class AuthService {
         });
         if (user) {
             const matched = await bcrypt.compare(loginDto.password, user.hashed_password)
-            if (matched) return user;
-            else throw new ConflictException("Wrong Credentials!")
+            if (matched) {
+                const {hashed_password, ...r} = user
+                const payload: JwtPayload = {email: loginDto.email};
+                const token = await this.jwtService.sign(payload);
+                return {...r, token};
+            } else throw new ConflictException("Wrong Credentials!")
         } else throw new NotFoundException();
     }
 
