@@ -15,6 +15,9 @@ export class Book extends BaseEntity {
     des: string;
 
     @Column()
+    icon: string;
+
+    @Column()
     link: string;
 
 }
