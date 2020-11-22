@@ -5,9 +5,7 @@ import AdminBro from "admin-bro";
 
 import * as AdminBroExpress from "admin-bro-expressjs";
 import UserResource from "./resources/user.resource";
-import {User} from "../entities/user.entity";
-import * as bcrypt from "bcryptjs"
-import {UserType} from "../auth/jwt-payload.interface";
+import BookResource from "./resources/book.resource";
 
 export async function setupAdminPanel(app: INestApplication): Promise<void> {
 
@@ -16,7 +14,7 @@ export async function setupAdminPanel(app: INestApplication): Promise<void> {
      */
     AdminBro.registerAdapter({Database, Resource});
     const adminBro = new AdminBro({
-        resources: [UserResource],
+        resources: [UserResource, BookResource],
         rootPath: "/admin"
     });
 

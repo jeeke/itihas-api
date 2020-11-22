@@ -8,6 +8,7 @@ import {ServeStaticModule} from "@nestjs/serve-static";
 import {join} from 'path';
 import {PaymentModule} from './payment/payment.module';
 import {AppService} from "./app.service";
+import { BooksModule } from './books/books.module';
 
 @Module({
     imports: [
@@ -17,7 +18,8 @@ import {AppService} from "./app.service";
         }),
         TypeOrmModule.forRoot(typeOrmConfig),
         AuthModule,
-        PaymentModule
+        PaymentModule,
+        BooksModule
     ],
     controllers: [AppController],
     providers: [AuthService, AppService],
