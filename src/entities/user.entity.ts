@@ -1,4 +1,5 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique} from "typeorm/index";
+import {BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique} from "typeorm/index";
+import {Comment} from "./comment.entity";
 
 @Entity()
 @Unique(["email"])
@@ -26,5 +27,8 @@ export class User extends BaseEntity {
 
     @Column()
     user_type: string;
+
+    @OneToMany(type => Comment, comment => comment.user)
+    comments: Comment[]
 
 }

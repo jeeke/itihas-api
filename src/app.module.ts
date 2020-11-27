@@ -9,6 +9,7 @@ import {join} from 'path';
 import {PaymentModule} from './payment/payment.module';
 import {AppService} from "./app.service";
 import { BooksModule } from './books/books.module';
+import { BlogsModule } from './blogs/blogs.module';
 
 @Module({
     imports: [
@@ -19,7 +20,8 @@ import { BooksModule } from './books/books.module';
         TypeOrmModule.forRoot(typeOrmConfig),
         AuthModule,
         PaymentModule,
-        BooksModule
+        BooksModule,
+        BlogsModule
     ],
     controllers: [AppController],
     providers: [AuthService, AppService],

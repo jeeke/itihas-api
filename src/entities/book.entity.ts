@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique} from "typeorm/index";
+import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm/index";
 
 @Entity()
 export class Book extends BaseEntity {
