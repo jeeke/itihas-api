@@ -22,7 +22,8 @@ export class BlogsService {
             },
             relations: ['blogs']
         })
-        return t.blogs;
+        if (t) return t.blogs;
+        else return [];
     }
 
     async getAllComments(blogId: number) {
@@ -32,7 +33,11 @@ export class BlogsService {
             },
             relations: ["comments"]
         })
-        return blog.comments;
+        blog.comments.forEach(c => {
+            c['name'] = c.user.name
+            delete c.user
+        });
+        return blog.comments
     }
 
     async createComment(user: User, blogId: number, createCommentDto: CreateCommentDto) {
@@ -44,7 +49,11 @@ export class BlogsService {
                 id: blogId
             }
         })
-        return c.save()
+        await c.save()
+        c['name'] = c.user.name
+        delete c.user
+        delete c.blog
+        return c
     }
 
     async createBlog(user: User, createBlogDto: CreateBlogDto) {
@@ -52,6 +61,7 @@ export class BlogsService {
             const blog = new Blog()
             blog.title = createBlogDto.title
             blog.body = createBlogDto.body
+            blog.image = createBlogDto.image
             blog.tags = await this.getAllTags(createBlogDto.tags)
             await blog.save()
         } else throw new UnauthorizedException()
@@ -67,6 +77,7 @@ export class BlogsService {
             })
             blog.title = updateBlogDto.title
             blog.body = updateBlogDto.body
+            blog.image = updateBlogDto.image
             blog.tags = await this.getAllTags(updateBlogDto.tags)
             await blog.save()
         } else throw new UnauthorizedException()
@@ -90,7 +101,6 @@ export class BlogsService {
             return tag
         })
 
-        await Tag.save(newTags)
         return alreadyAvailableTags.concat(newTags)
     }
 }

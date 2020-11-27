@@ -27,11 +27,13 @@ export class Course extends BaseEntity {
     videos: CourseVideo[]
 
     async isEnrolled(user: User) {
-        const isEnrolled = await User.createQueryBuilder("course")
-            .leftJoinAndSelect("course.user", "user")
-            .where("user.id = :userId", {userId: user.id})
-            .getCount()
+        if (user) {
+            const isEnrolled = await Course.createQueryBuilder("course")
+                .leftJoinAndSelect("course.users", "user")
+                .where("user.id = :userId", {userId: user.id})
+                .getCount()
 
-        return Boolean(isEnrolled)
+            return Boolean(isEnrolled)
+        } else return false
     }
 }

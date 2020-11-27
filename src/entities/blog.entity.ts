@@ -16,7 +16,10 @@ export class Blog extends BaseEntity {
     @Column()
     body: string;
 
-    @ManyToMany(() => Tag, tag => tag.blogs)
+    @ManyToMany(() => Tag, tag => tag.blogs, {
+        eager: true,
+        cascade: true
+    })
     @JoinTable()
     tags: Tag[];
 

@@ -1,17 +1,12 @@
 import {Injectable} from '@nestjs/common';
 import {Course} from "../entities/course.entity";
 import {User} from "../entities/user.entity";
-import {IsNull} from "typeorm/index";
 
 @Injectable()
 export class CoursesService {
 
     getAllCourses() {
-        return Course.find({
-            where: {
-                user: IsNull()
-            }
-        })
+        return Course.find()
     }
 
     async getEnrolledCourses(user: User) {
@@ -19,7 +14,7 @@ export class CoursesService {
             where: {
                 id: user.id
             },
-            relations: ['courses']
+            relations: ['enrolled_courses']
         })
         return u.enrolled_courses
     }
@@ -42,7 +37,8 @@ export class CoursesService {
         const c = await Course.findOne({
             where: {
                 id: courseId
-            }
+            },
+            relations: ['users']
         })
         c.users.push(user)
         await c.save()

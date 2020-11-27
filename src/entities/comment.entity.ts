@@ -1,4 +1,12 @@
-import {BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm/index";
+import {
+    BaseEntity,
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm/index";
 import {Blog} from "./blog.entity";
 import {User} from "./user.entity";
 
@@ -10,11 +18,16 @@ export class Comment extends BaseEntity {
     @Column()
     body: string;
 
+    @CreateDateColumn()
+    created_at: Date
+
+    @UpdateDateColumn()
+    updated_at: Date
+
     @ManyToOne(type => Blog, blog => blog.comments)
     blog: Blog
 
     @ManyToOne(type => User, {
-        cascade: true,
         eager: true
     })
     user: User
