@@ -10,6 +10,7 @@ import {PaymentModule} from './payment/payment.module';
 import {AppService} from "./app.service";
 import { BooksModule } from './books/books.module';
 import { BlogsModule } from './blogs/blogs.module';
+import { CoursesModule } from './courses/courses.module';
 
 @Module({
     imports: [
@@ -21,7 +22,8 @@ import { BlogsModule } from './blogs/blogs.module';
         AuthModule,
         PaymentModule,
         BooksModule,
-        BlogsModule
+        BlogsModule,
+        CoursesModule
     ],
     controllers: [AppController],
     providers: [AuthService, AppService],

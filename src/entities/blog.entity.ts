@@ -21,6 +21,7 @@ export class Blog extends BaseEntity {
     tags: Tag[];
 
     @OneToMany(type => Comment, comment => comment.blog)
+    @JoinTable()
     comments: Comment[]
 
 }
