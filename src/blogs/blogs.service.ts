@@ -6,6 +6,7 @@ import {UserType} from "../auth/jwt-payload.interface";
 import {Tag} from "../entities/tag.entity";
 import {In} from "typeorm/index";
 import {Comment} from "../entities/comment.entity";
+import {CreateCommentDto} from "./dto/CreateCommentDto";
 
 @Injectable()
 export class BlogsService {
@@ -34,9 +35,9 @@ export class BlogsService {
         return blog.comments;
     }
 
-    async createComment(user: User, blogId: number, commentBody: string) {
+    async createComment(user: User, blogId: number, createCommentDto: CreateCommentDto) {
         const c = new Comment()
-        c.body = commentBody
+        c.body = createCommentDto.comment_body
         c.user = user
         c.blog = await Blog.findOne({
             where: {
