@@ -21,7 +21,9 @@ export class CreateBlogDto {
     @IsNotEmpty()
     body: string;
 
-    @ApiProperty()
+    @ApiPropertyOptional({
+        description: "Pass array of strings after doing : array.join(',')"
+    })
     @IsString()
     tags: string;
 

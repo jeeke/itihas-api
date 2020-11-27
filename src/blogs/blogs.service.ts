@@ -73,7 +73,7 @@ export class BlogsService {
     }
 
     async getAllTags(tParam: string) {
-        const tString: string[] = JSON.parse(tParam);
+        const tString: string[] = tParam.split(',');
         tString.forEach((tag, index) => {
             tString[index] = tag.toLowerCase()
         });
