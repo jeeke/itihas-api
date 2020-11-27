@@ -5,6 +5,7 @@ import {GetUser} from "../auth/get-user.decorator";
 import {User} from "../entities/user.entity";
 import {CreateBlogDto} from "./dto/CreateBlogDto";
 import {CreateCommentDto} from "./dto/CreateCommentDto";
+import {ApiImplicitQuery} from "@nestjs/swagger/dist/decorators/api-implicit-query.decorator";
 
 @Controller('blogs')
 export class BlogsController {
@@ -12,6 +13,12 @@ export class BlogsController {
     constructor(private blogsService: BlogsService) {
     }
 
+    @ApiImplicitQuery({
+        name: "tag",
+        description: "filter blogs by tags",
+        required: false,
+        type: String
+    })
     @Get('/')
     getAllBlogs(@Query('tag') tag: string) {
         if (tag) return this.blogsService.getBlogsByTag(tag)
