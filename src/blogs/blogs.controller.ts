@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, UseGuards, ValidationPipe} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Query, UseGuards, ValidationPipe} from '@nestjs/common';
 import {BlogsService} from "./blogs.service";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import {GetUser} from "../auth/get-user.decorator";
@@ -13,13 +13,9 @@ export class BlogsController {
     }
 
     @Get('/')
-    getAllBlogs() {
+    getAllBlogs(@Query('tag') tag: string) {
+        if (tag) return this.blogsService.getBlogsByTag(tag)
         return this.blogsService.getAllBlogs()
-    }
-
-    @Get('/tags/:id')
-    getBlogsByTagId(@Param('id') tagId: number) {
-        return this.blogsService.getBlogsByTagId(tagId)
     }
 
     @UseGuards(JwtAuthGuard)
@@ -34,14 +30,14 @@ export class BlogsController {
         return this.blogsService.updateBlog(user, updateBlogDto)
     }
 
-    @Get('/:id/comments')
-    getAllComments(@Param('id') blogId: number) {
+    @Get('/:blog_id/comments')
+    getAllComments(@Param('blog_id') blogId: number) {
         return this.blogsService.getAllComments(blogId)
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post('/:id/comments')
-    createComment(@GetUser() user: User, @Param('id') blogId: number, @Body(ValidationPipe) createCommentDto: CreateCommentDto) {
+    @Post('/:blog_id/comments')
+    createComment(@GetUser() user: User, @Param('blog_id') blogId: number, @Body(ValidationPipe) createCommentDto: CreateCommentDto) {
         return this.blogsService.createComment(user, blogId, createCommentDto)
     }
 }

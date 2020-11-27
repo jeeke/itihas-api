@@ -8,6 +8,9 @@ export class Blog extends BaseEntity {
     id: number;
 
     @Column()
+    image: string;
+
+    @Column()
     title: string;
 
     @Column()

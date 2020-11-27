@@ -15,10 +15,10 @@ export class BlogsService {
         return Blog.find()
     }
 
-    async getBlogsByTagId(tagId: number) {
+    async getBlogsByTag(tag: string) {
         const t = await Tag.findOne({
             where: {
-                id: tagId
+                title: tag
             },
             relations: ['blogs']
         })
