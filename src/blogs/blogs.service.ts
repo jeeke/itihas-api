@@ -57,28 +57,32 @@ export class BlogsService {
     }
 
     async createBlog(user: User, createBlogDto: CreateBlogDto) {
+        const {title, body, author, image, tags} = createBlogDto
         if (user.user_type === UserType.Admin) {
             const blog = new Blog()
-            blog.title = createBlogDto.title
-            blog.body = createBlogDto.body
-            blog.image = createBlogDto.image
-            blog.tags = await this.getAllTags(createBlogDto.tags)
+            blog.title = title
+            blog.body = body
+            blog.author = author
+            blog.image = image
+            blog.tags = await this.getAllTags(tags)
             await blog.save()
         } else throw new UnauthorizedException()
     }
 
     async updateBlog(user: User, updateBlogDto: CreateBlogDto) {
         if (!updateBlogDto.id) throw new BadRequestException("ID of the blog required!")
+        const {title, body, author, image, tags} = updateBlogDto
         if (user.user_type === UserType.Admin) {
             const blog = await Blog.findOne({
                 where: {
                     id: updateBlogDto.id
                 }
             })
-            blog.title = updateBlogDto.title
-            blog.body = updateBlogDto.body
-            blog.image = updateBlogDto.image
-            blog.tags = await this.getAllTags(updateBlogDto.tags)
+            blog.title = title
+            blog.body = body
+            blog.author = author
+            blog.image = image
+            blog.tags = await this.getAllTags(tags)
             await blog.save()
         } else throw new UnauthorizedException()
     }

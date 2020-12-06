@@ -15,6 +15,11 @@ export class CreateBlogDto {
     @IsNotEmpty()
     title: string;
 
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    author: string;
+
 
     @ApiProperty()
     @IsString()

@@ -11,6 +11,9 @@ export class Blog extends BaseEntity {
     image: string;
 
     @Column()
+    author: string;
+
+    @Column()
     title: string;
 
     @Column()
