@@ -10,7 +10,7 @@ export class Blog extends BaseEntity {
     @Column()
     image: string;
 
-    @Column()
+    @Column({nullable: true})
     author: string;
 
     @Column()
