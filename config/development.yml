@@ -13,3 +13,10 @@ db:
 jwt:
   secret: 'jfal24dfaee324'
 #  expiresIn: 3600
+
+razorpay:
+  keyId: 'rzp_test_RUpmgSgMUlsx94'
+  keySecret: 'nGzDAwYxGrrdsT6JOAnFT9LY'
+  #  keyId: 'rzp_live_EwED1ul2Uv65Rt'
+  #  keySecret: 'zR7ogR4hmkJVtKEC5mrcuvWk'
+  webhookSecret: 'sfjfd$jl@*%KJLHFE#$@@$'

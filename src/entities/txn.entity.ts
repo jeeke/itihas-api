@@ -1,6 +1,7 @@
 import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 import {CreateDateColumn, JoinColumn, ManyToOne, OneToOne} from "typeorm/index";
 import {User} from "./user.entity";
+import {Course} from "./course.entity";
 
 @Entity()
 export class Transaction extends BaseEntity {
@@ -11,8 +12,9 @@ export class Transaction extends BaseEntity {
     @JoinColumn()
     user: User;
 
-    @Column()
-    amount: number;
+    @ManyToOne(type => Course)
+    @JoinColumn()
+    course: Course;
 
     @CreateDateColumn()
     created_at: Date;
@@ -20,21 +22,7 @@ export class Transaction extends BaseEntity {
     @Column()
     txn_status: string;
 
-    @Column({nullable: true})
-    upi_id: string;
-
-    @Column({nullable: true})
+    @Column()
     order_id: string;
 
-    @Column({nullable: true})
-    payment_id: string;
-
-    @Column({nullable: true})
-    remark: string;
-
-    @Column({nullable: true})
-    fail_msg: string;
-
-    @Column({nullable: true})
-    razorpay_order: string
 }

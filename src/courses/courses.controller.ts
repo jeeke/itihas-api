@@ -4,16 +4,24 @@ import {JwtAuthGuard, OptionalJwtAuthGuard} from "../auth/jwt-auth.guard";
 import {GetUser} from "../auth/get-user.decorator";
 import {User} from "../entities/user.entity";
 import {ApiBearerAuth} from "@nestjs/swagger";
-import {AuthGuard} from "@nestjs/passport";
+import {PaymentService} from "../payment/payment.service";
 
 @Controller('courses')
 export class CoursesController {
-    constructor(private courseService: CoursesService) {
+    constructor(
+        private courseService: CoursesService,
+        private paymentService: PaymentService
+    ) {
     }
 
     @Get('/')
     getAllCourses() {
         return this.courseService.getAllCourses()
+    }
+
+    @Get('/free_videos')
+    getAllFreeVideos() {
+        return this.courseService.getAllFreeVideos()
     }
 
     @UseGuards(JwtAuthGuard)
@@ -34,6 +42,6 @@ export class CoursesController {
     @ApiBearerAuth()
     @Post('/:course_id/enroll')
     enrollInCourse(@GetUser() user: User, @Param('course_id') id: number) {
-        return this.courseService.enrollInCourse(user, id)
+        return this.paymentService.initializeCourseEnrollment(user, id)
     }
 }
