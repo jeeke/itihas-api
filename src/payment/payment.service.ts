@@ -40,22 +40,26 @@ export class PaymentService {
     // ----------------------------Razorpay Webhook Events----------------------------
 
     async handlePaymentEvent(body, signature) {
-        await Razorpay.validateWebhookSignature(JSON.stringify(body), signature, RazorpayConfig.webhookSecret)
-        const payment = body.payload.payment.entity
-        const txn = await Transaction.findOne({
-            where: {
-                order_id: payment.order_id
-            },
-            relations: ["user", "course"]
-        });
-        if (!txn) throw new UnknownElementException('Transaction Not Found!')
-        if (body.event === 'payment.captured') {
-            await this.handlePaymentCapturedEvent(payment, txn);
-        } else if (body.event === 'payment.failed') {
-            await this.handlePaymentFailedEvent(payment, txn)
+        const verified = await Razorpay.validateWebhookSignature(JSON.stringify(body), signature, RazorpayConfig.webhookSecret)
+        if (verified === true) {
+            const payment = body.payload.payment.entity
+            const txn = await Transaction.findOne({
+                where: {
+                    order_id: payment.order_id
+                },
+                relations: ["user", "course"]
+            });
+            if (!txn) throw new UnknownElementException('Transaction Not Found!')
+            if (body.event === 'payment.captured') {
+                await this.handlePaymentCapturedEvent(payment, txn);
+            } else if (body.event === 'payment.failed') {
+                await this.handlePaymentFailedEvent(payment, txn)
+            } else {
+                this.logger.error("Unknown Payment Event", JSON.stringify(body))
+                throw new UnknownElementException("Unknown payment event!");
+            }
         } else {
-            this.logger.error("Unknown Payment Event", JSON.stringify(body))
-            throw new UnknownElementException("Unknown payment event!");
+            throw new BadRequestException("Payment Tampered!");
         }
     }
 
