@@ -20,6 +20,7 @@ export class PaymentService {
 
     async initializeCourseEnrollment(user: User, courseId: number) {
         const c = await Course.findOne(courseId);
+        if (await c.isEnrolled(user)) throw new BadRequestException("Already enrolled in course");
         const amount = c.price
         if (amount <= 0) throw new BadRequestException('Amount must be greater than zero!')
         const instance = new Razorpay({key_id: RazorpayConfig.keyId, key_secret: RazorpayConfig.keySecret});
@@ -40,10 +41,10 @@ export class PaymentService {
     // ----------------------------Razorpay Webhook Events----------------------------
 
     async handlePaymentEvent(body, signature) {
-        // const verified = await Razorpay.validateWebhookSignature(JSON.stringify(body), signature, RazorpayConfig.webhookSecret)
-        // if (verified === true) {
-            this.logger.log("Webhook Body", JSON.stringify(body))
-            this.logger.log("Webhook Signature", JSON.stringify(signature))
+        const verified = await Razorpay.validateWebhookSignature(JSON.stringify(body), signature, RazorpayConfig.webhookSecret)
+        if (verified === true) {
+            // this.logger.log("Webhook Body", JSON.stringify(body))
+            // this.logger.log("Webhook Signature", JSON.stringify(signature))
             const payment = body.payload.payment.entity
             const txn = await Transaction.findOne({
                 where: {
@@ -60,9 +61,9 @@ export class PaymentService {
                 this.logger.error("Unknown Payment Event", JSON.stringify(body))
                 throw new UnknownElementException("Unknown payment event!");
             }
-        // } else {
-        //     throw new BadRequestException("Payment Tampered!");
-        // }
+        } else {
+            throw new BadRequestException("Payment Not Verified!");
+        }
     }
 
     async handlePaymentCapturedEvent(payment, txn: Transaction) {

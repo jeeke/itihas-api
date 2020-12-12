@@ -14,7 +14,7 @@ export class CoursesService {
     getAllFreeVideos() {
         return CourseVideo.find({
             where: {
-                course : IsNull()
+                course: IsNull()
             }
         })
     }
@@ -36,11 +36,11 @@ export class CoursesService {
             },
             relations: ['videos']
         })
-        const isEnrolled = await c.isEnrolled(user)
-        if (!isEnrolled) {
+        const is_enrolled = await c.isEnrolled(user)
+        if (!is_enrolled) {
             c.videos.forEach(v => delete v.video_url)
         }
-        return c
+        return {is_enrolled, ...c}
     }
 
 }
