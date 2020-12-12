@@ -40,8 +40,8 @@ export class PaymentService {
     // ----------------------------Razorpay Webhook Events----------------------------
 
     async handlePaymentEvent(body, signature) {
-        const verified = await Razorpay.validateWebhookSignature(JSON.stringify(body), signature, RazorpayConfig.webhookSecret)
-        if (verified === true) {
+        // const verified = await Razorpay.validateWebhookSignature(JSON.stringify(body), signature, RazorpayConfig.webhookSecret)
+        // if (verified === true) {
             const payment = body.payload.payment.entity
             const txn = await Transaction.findOne({
                 where: {
@@ -58,9 +58,9 @@ export class PaymentService {
                 this.logger.error("Unknown Payment Event", JSON.stringify(body))
                 throw new UnknownElementException("Unknown payment event!");
             }
-        } else {
-            throw new BadRequestException("Payment Tampered!");
-        }
+        // } else {
+        //     throw new BadRequestException("Payment Tampered!");
+        // }
     }
 
     async handlePaymentCapturedEvent(payment, txn: Transaction) {
