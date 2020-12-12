@@ -42,6 +42,8 @@ export class PaymentService {
     async handlePaymentEvent(body, signature) {
         // const verified = await Razorpay.validateWebhookSignature(JSON.stringify(body), signature, RazorpayConfig.webhookSecret)
         // if (verified === true) {
+            this.logger.log("Webhook Body", JSON.stringify(body))
+            this.logger.log("Webhook Signature", JSON.stringify(signature))
             const payment = body.payload.payment.entity
             const txn = await Transaction.findOne({
                 where: {
