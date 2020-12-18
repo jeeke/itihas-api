@@ -22,20 +22,31 @@ export class PaymentService {
         const c = await Course.findOne(courseId);
         if (await c.isEnrolled(user)) throw new BadRequestException("Already enrolled in course");
         const amount = c.price
-        if (amount <= 0) throw new BadRequestException('Amount must be greater than zero!')
-        const instance = new Razorpay({key_id: RazorpayConfig.keyId, key_secret: RazorpayConfig.keySecret});
-        const options = {
-            amount: amount * 100,
-            currency: "INR"
-        };
-        const order = await instance.orders.create(options);
-        const txn = new Transaction();
-        txn.user = user;
-        txn.course = c;
-        txn.txn_status = TxnStatus.Processing;
-        txn.order_id = order.id;
-        await txn.save();
-        return order;
+        if (amount <= 0) {
+            const u = await User.findOne({
+                where: {
+                    id: user.id
+                },
+                relations: ["enrolled_courses"]
+            });
+            u.enrolled_courses.push(c);
+            await u.save();
+            return {message: "Enrolled Successfully"};
+        } else {
+            const instance = new Razorpay({key_id: RazorpayConfig.keyId, key_secret: RazorpayConfig.keySecret});
+            const options = {
+                amount: amount * 100,
+                currency: "INR"
+            };
+            const order = await instance.orders.create(options);
+            const txn = new Transaction();
+            txn.user = user;
+            txn.course = c;
+            txn.txn_status = TxnStatus.Processing;
+            txn.order_id = order.id;
+            await txn.save();
+            return order;
+        }
     }
 
     // ----------------------------Razorpay Webhook Events----------------------------
@@ -96,5 +107,6 @@ export class PaymentService {
             return await txn.save();
         } else throw new ConflictException('Data Mismatch!');
     }
+
 
 }
