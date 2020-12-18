@@ -27,13 +27,16 @@ export class Course extends BaseEntity {
     videos: CourseVideo[]
 
     async isEnrolled(user: User) {
-        if (user) {
-            const isEnrolled = await Course.createQueryBuilder("course")
-                .leftJoinAndSelect("course.users", "user")
-                .where("user.id = :userId", {userId: user.id})
-                .getCount()
-
-            return Boolean(isEnrolled)
-        } else return false
+        const u = await User.findOne({
+            where: {
+                id: user.id
+            },
+            relations: ["enrolled_courses"]
+        });
+        let enrolled = false;
+        u.enrolled_courses.forEach(c => {
+            enrolled = c.id === this.id
+        })
+        return enrolled
     }
 }
