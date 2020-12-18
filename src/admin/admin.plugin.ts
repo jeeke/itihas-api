@@ -30,7 +30,7 @@ export async function setupAdminPanel(app: INestApplication): Promise<void> {
             ContactFormResource,
             CourseResource,
             CourseVideoResource,
-            TagResource,
+            // TagResource,
             UserResource
         ],
         rootPath: "/admin"
