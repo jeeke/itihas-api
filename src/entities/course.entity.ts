@@ -35,7 +35,7 @@ export class Course extends BaseEntity {
         });
         let enrolled = false;
         u.enrolled_courses.forEach(c => {
-            enrolled = c.id === this.id
+            if(c.id === this.id) enrolled = true;
         })
         return enrolled
     }
